@@ -15,6 +15,7 @@ function renderExhibition(){
   document.querySelector('#exhibition-prev').disabled=visible.length<2;
   document.querySelector('#exhibition-next').disabled=visible.length<2;
   thumbnails.hidden=visible.length<2;
+  document.querySelector('.exhibition-toolbar>span').textContent=visible.length>1?'互动展厅 · 点击箭头或缩略图切换作品':'互动展厅 · 点击作品查看完整大图';
   document.querySelector('.exhibition-hint').textContent=visible.length>1?'← → 键盘切换 · 手机左右滑动 · 点击作品放大':'点击作品，进入原作大图浏览';
   document.querySelector('#exhibition-counter').textContent=`${String(exhibitionIndex+1).padStart(2,'0')} / ${String(visible.length).padStart(2,'0')}`;
   thumbnails.replaceChildren(...visible.map((item,index)=>{

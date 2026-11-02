@@ -23,3 +23,6 @@ addEventListener('scroll',()=>{if(!navigationTick){navigationTick=true;requestAn
 // Preserve original artwork colors throughout the monochrome interface.
 // Open on the editorial contact sheet; the immersive gallery remains one click away.
 document.querySelector('[data-mode="grid"]').click();
+
+// Derive the collection count from uploaded works as the archive grows.
+const collectionCount=document.querySelector('[data-filter="all"] sup');if(collectionCount)collectionCount.textContent=String(works.length).padStart(2,'0');
