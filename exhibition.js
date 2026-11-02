@@ -35,3 +35,5 @@ const progress=document.querySelector('.reading-progress');
 function updateProgress(){const max=document.documentElement.scrollHeight-innerHeight;progress.style.transform=`scaleX(${max>0?scrollY/max:0})`}
 addEventListener('scroll',updateProgress,{passive:true});addEventListener('resize',updateProgress);addEventListener('load',updateProgress);updateProgress();renderExhibition();
 if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{threshold:.06});document.querySelectorAll('.artist,.career,.publications,.criticism').forEach(section=>{section.classList.add('reveal-section');observer.observe(section)})}
+
+const entry=document.createElement('button');entry.type='button';entry.className='exhibition-entry';entry.textContent='进入互动展厅 ↗';entry.addEventListener('click',()=>{document.querySelector('[data-mode="exhibition"]').click();document.querySelector('#works').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});});document.body.append(entry);
