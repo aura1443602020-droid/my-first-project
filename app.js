@@ -1,6 +1,7 @@
 const works = [
   {title:'共享单车之五',category:'uploaded',src:'assets/WechatIMG53952.jpg',meta:'2018.2 · 152 × 112.5 cm · 纸本水彩',description:'第六届全国青年美展（最高奖）\n第十二届艺术节全国优秀美术作品展\n第十三届全国美术作品展水彩·粉画展'},
-  {title:'共享单车',category:'uploaded',src:'assets/WechatIMG53948.jpg',meta:'2017.7 · 78 × 108 cm · 纸本水彩',description:'第三届全国青年水彩展（中国美协入会资格）\n北疆新象——北方四省区高校教师美术作品巡展'}
+  {title:'共享单车',category:'uploaded',src:'assets/WechatIMG53948.jpg',meta:'2017.7 · 78 × 108 cm · 纸本水彩',description:'第三届全国青年水彩展（中国美协入会资格）\n北疆新象——北方四省区高校教师美术作品巡展'},
+  {title:'共享单车之十三',category:'uploaded',src:'assets/WechatIMG53946.jpg',meta:'2020.9 · 40.5 × 28.7',description:'第三届全国小幅画展入会资格奖'}
 ];
 const gallery=document.querySelector('#gallery'), dialog=document.querySelector('#lightbox');
 let visible=works, current=0, lastFocus;
