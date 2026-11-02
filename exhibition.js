@@ -7,16 +7,21 @@ function renderExhibition(){
   if(!visible.length)return;
   exhibitionIndex=Math.min(exhibitionIndex,visible.length-1);
   const work=visible[exhibitionIndex];
-  exhibitionImage.src=`assets/${work.file}.svg`;
-  exhibitionImage.alt=`示例插画：${work.title}，非宫建宇作品`;
+  exhibitionImage.src=`${work.src}`;
+  exhibitionImage.alt=`宫建宇作品：${work.title}`;
   document.querySelector('#exhibition-title').textContent=work.title;
   document.querySelector('#exhibition-description').textContent=work.description;
+  document.querySelector('.exhibition-caption small').textContent=work.meta;
+  document.querySelector('#exhibition-prev').disabled=visible.length<2;
+  document.querySelector('#exhibition-next').disabled=visible.length<2;
+  thumbnails.hidden=visible.length<2;
+  document.querySelector('.exhibition-hint').textContent=visible.length>1?'← → 键盘切换 · 手机左右滑动 · 点击作品放大':'点击作品，进入原作大图浏览';
   document.querySelector('#exhibition-counter').textContent=`${String(exhibitionIndex+1).padStart(2,'0')} / ${String(visible.length).padStart(2,'0')}`;
   thumbnails.replaceChildren(...visible.map((item,index)=>{
     const button=document.createElement('button');
     button.type='button';button.setAttribute('aria-label',`选择作品：${item.title}`);
     button.setAttribute('aria-pressed',String(index===exhibitionIndex));
-    const image=document.createElement('img');image.src=`assets/${item.file}.svg`;image.alt='';
+    const image=document.createElement('img');image.src=`${item.src}`;image.alt='';
     const number=document.createElement('span');number.textContent=String(index+1).padStart(2,'0');
     button.append(image,number);button.addEventListener('click',()=>{exhibitionIndex=index;renderExhibition()});return button;
   }));
