@@ -37,3 +37,19 @@ addEventListener('scroll',updateProgress,{passive:true});addEventListener('resiz
 if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{threshold:.06});document.querySelectorAll('.artist,.career,.publications,.criticism').forEach(section=>{section.classList.add('reveal-section');observer.observe(section)})}
 
 const entry=document.createElement('button');entry.type='button';entry.className='exhibition-entry';entry.textContent='进入互动展厅 ↗';entry.addEventListener('click',()=>{document.querySelector('[data-mode="exhibition"]').click();document.querySelector('#works').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});});document.body.append(entry);
+// A modal exhibition makes the artwork the entire viewing experience.
+const immersive=document.createElement('dialog');immersive.className='immersive-exhibition';immersive.setAttribute('aria-label','沉浸式作品展厅');
+const immersiveClose=document.createElement('button');immersiveClose.className='immersive-close';immersiveClose.textContent='退出展厅 ×';immersiveClose.type='button';immersiveClose.addEventListener('click',()=>immersive.close());
+immersive.append(immersiveClose);document.body.append(immersive);
+const immersiveButton=document.createElement('button');immersiveButton.type='button';immersiveButton.className='immersive-start';immersiveButton.textContent='⛶ 沉浸观展';document.querySelector('.exhibition-toolbar').prepend(immersiveButton);
+const originalParent=exhibition.parentNode,originalNext=exhibition.nextSibling;let immersiveFocus;
+function enterImmersive(){immersiveFocus=document.activeElement;document.querySelector('[data-mode="exhibition"]').click();immersive.append(exhibition);immersive.showModal();document.body.classList.add('modal-open');}
+immersiveButton.addEventListener('click',enterImmersive);
+entry.textContent='开启沉浸观展 ⛶';entry.addEventListener('click',enterImmersive);
+immersive.addEventListener('close',()=>{originalParent.insertBefore(exhibition,originalNext);document.body.classList.remove('modal-open');immersiveFocus?.focus()});
+dialog.addEventListener('close',()=>{if(immersive.open)document.body.classList.add('modal-open')});
+// Animate only when the image changes; honor reduced-motion preferences.
+new MutationObserver(()=>{if(!matchMedia('(prefers-reduced-motion: reduce)').matches){exhibitionImage.animate([{opacity:0,transform:'translateX(30px) scale(.97)'},{opacity:1,transform:'translateX(0) scale(1)'}],{duration:550,easing:'cubic-bezier(.2,.7,.3,1)'});document.querySelector('#exhibition-title').animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'translateY(0)'}],{duration:450});}}).observe(exhibitionImage,{attributes:true,attributeFilter:['src']});
+const heroArt=document.querySelector('.hero-art');
+let heroTicking=false;
+addEventListener('scroll',()=>{if(heroTicking||matchMedia('(prefers-reduced-motion: reduce)').matches)return;heroTicking=true;requestAnimationFrame(()=>{const rect=heroArt.getBoundingClientRect();if(rect.bottom>0&&rect.top<innerHeight){const progress=Math.max(0,Math.min(1,(innerHeight-rect.top)/(innerHeight+rect.height)));heroArt.querySelector('img').style.transform=`scale(${1+progress*.045})`;}heroTicking=false;})},{passive:true});
